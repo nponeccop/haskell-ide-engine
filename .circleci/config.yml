@@ -19,7 +19,8 @@ jobs:
           paths:
             - ~/.stack
             - ~/.local
-      - run: stack install --test --no-terminal --system-ghc -j 2
+      - run: stack install --test --no-terminal --system-ghc -j 2 --no-run-tests
+      - run: stack install --test --system-ghc -j 2 -v
       - store_artifacts:
           path: ~/.local/bin/hie
           destination: hie-8.0.2
@@ -40,13 +41,14 @@ jobs:
           key: v2-cache-8.2.1
       - run: stack upgrade --git --system-ghc
       - run: stack setup --no-terminal --stack-yaml=stack-8.2.1.yaml
-      - run: stack build --test --only-dependencies --no-terminal --stack-yaml=stack-8.2.1.yaml -j 2
+      - run: stack build --test --only-snapshot --no-terminal --stack-yaml=stack-8.2.1.yaml -j 2
       - save_cache:
           key: v2-cache-8.2.1
           paths:
             - ~/.stack
             - ~/.local
-      - run: stack install --test --no-terminal --system-ghc -j 2
+      - run: stack install --test --no-terminal --system-ghc -j 2 --no-run-tests
+      - run: stack install --test --system-ghc -j 2 -v
       - store_artifacts:
           path: ~/.local/bin/hie
           destination: hie-8.2.1
@@ -67,13 +69,16 @@ jobs:
           key: v2-cache-8.2.2
       - run: stack upgrade --git --system-ghc
       - run: stack setup --no-terminal --stack-yaml=stack-8.2.2.yaml
-      - run: stack build --test --only-dependencies --no-terminal --stack-yaml=stack-8.2.2.yaml -j 2
+      - run: stack build --test --only-snapshot --no-terminal --stack-yaml=stack-8.2.2.yaml -j 2
       - save_cache:
           key: v2-cache-8.2.2
           paths:
             - ~/.stack
             - ~/.local
-      - run: stack install --test --no-terminal --system-ghc -j 2
+      - run: stack build --test --no-terminal --system-ghc -j 2 --no-run-tests
+      - run:
+          command: stack install --test --system-ghc -j 2 -v
+          no_output_timeout: 20m
       - store_artifacts:
           path: ~/.local/bin/hie
           destination: hie-8.2.2

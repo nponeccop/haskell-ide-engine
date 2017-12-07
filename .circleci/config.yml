@@ -12,18 +12,23 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: v2-cache
+          keys:
+          - v3-cache
+          - v2-cache
       - run: stack build --test --only-dependencies --no-terminal --system-ghc -j 2
       - save_cache:
-          key: v2-cache
+          key: v3-cache
           paths:
             - ~/.stack
             - ~/.local
       - run: stack install --test --no-terminal --system-ghc -j 2 --no-run-tests
-      - run: stack install --test --system-ghc -j 2 -v
+      - run:
+          command: stack install --test --system-ghc -j 2 -v
+          no_output_timeout: 20m
+      - run: cd ~ && tar cJvf hie.txz .local/bin/hie
       - store_artifacts:
-          path: ~/.local/bin/hie
-          destination: hie-8.0.2
+          path: ~/hie.txz
+          destination: hie-8.0.2.txz
       - store_test_results:
           path: ~/.stack-work/logs/*
   build-8.2.1:
@@ -47,13 +52,15 @@ jobs:
           paths:
             - ~/.stack
             - ~/.local
-      - run: stack install --test --no-terminal --system-ghc -j 2 --no-run-tests
-      - run: stack install --test --system-ghc -j 2 -v
+      - run: stack install --test --no-terminal -j 2 --no-run-tests
+      - run:
+          command: stack install --test -j 2
+          no_output_timeout: 20m
       - store_artifacts:
           path: ~/.local/bin/hie
           destination: hie-8.2.1
       - store_test_results:
-          path: ~/.stack-work/logs/*
+          path: .stack-work/haskell-ide-engine-0.1.0.0-test.log
   build-8.2.2:
     docker:
       - image: fpco/stack-build:lts-9.14
@@ -75,15 +82,15 @@ jobs:
           paths:
             - ~/.stack
             - ~/.local
-      - run: stack build --test --no-terminal --system-ghc -j 2 --no-run-tests
+      - run: stack build --test --no-terminal -j 2 --no-run-tests
       - run:
-          command: stack install --test --system-ghc -j 2 -v
+          command: stack install --test -j 2 -v
           no_output_timeout: 20m
       - store_artifacts:
           path: ~/.local/bin/hie
           destination: hie-8.2.2
       - store_test_results:
-          path: ~/.stack-work/logs/*
+          path: .stack-work/logs/*
 workflows:
   version: 2
   build-and-deploy:

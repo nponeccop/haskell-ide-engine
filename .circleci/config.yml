@@ -23,8 +23,8 @@ jobs:
             - ~/.local
       - run: stack install --test --no-terminal --system-ghc -j 2 --no-run-tests
       - run:
-          command: stack install --test --system-ghc -j 2 -v
-          no_output_timeout: 20m
+          command: stack build --test --system-ghc -j 2 -v haskell-ide-engine
+          no_output_timeout: 40m
       - run: cd ~ && tar cJvf hie.txz .local/bin/hie
       - store_artifacts:
           path: ~/hie.txz
@@ -54,8 +54,8 @@ jobs:
             - ~/.local
       - run: stack install --test --no-terminal -j 2 --no-run-tests
       - run:
-          command: stack install --test -j 2
-          no_output_timeout: 20m
+          command: stack install --test -j 2 haskell-ide-engine
+          no_output_timeout: 40m
       - store_artifacts:
           path: ~/.local/bin/hie
           destination: hie-8.2.1
@@ -84,8 +84,8 @@ jobs:
             - ~/.local
       - run: stack build --test --no-terminal -j 2 --no-run-tests
       - run:
-          command: stack install --test -j 2 -v
-          no_output_timeout: 20m
+          command: stack install --test -j 2 -v --cabal-verbose haskell-ide-engine
+          no_output_timeout: 40m
       - store_artifacts:
           path: ~/.local/bin/hie
           destination: hie-8.2.2

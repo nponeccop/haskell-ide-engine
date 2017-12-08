@@ -82,8 +82,7 @@ jobs:
           paths:
             - ~/.stack
             - ~/.local
-      - run: stack build --test --no-terminal -j 2 --no-run-tests --stack-yaml
-=8.2.2
+      - run: stack build --test --no-terminal -j 2 --no-run-tests --stack-yaml=8.2.2
       - run:
           command: stack install --test -j 2 -v --cabal-verbose --stack-yaml=8.2.2 --no-terminal haskell-ide-engine
 

@@ -54,8 +54,7 @@ jobs:
             - ~/.local
       - run: stack install --test --no-terminal -j 2 --no-run-tests --stack-yaml=8.2.1
       - run:
-          command: stack install --test -j 2 haskell-ide-engine --stack-yaml
-=8.2.1
+          command: stack install --test -j 2 haskell-ide-engine --stack-yaml=8.2.1
           no_output_timeout: 40m
       - store_artifacts:
           path: ~/.local/bin/hie

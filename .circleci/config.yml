@@ -52,9 +52,9 @@ jobs:
           paths:
             - ~/.stack
             - ~/.local
-      - run: stack install --test --no-terminal -j 2 --no-run-tests --stack-yaml=8.2.1
+      - run: stack install --test --no-terminal -j 2 --no-run-tests --stack-yaml=stack-8.2.1.yaml
       - run:
-          command: stack install --test -j 2 haskell-ide-engine --stack-yaml=8.2.1
+          command: stack install --test -j 2 haskell-ide-engine --stack-yaml=stack-8.2.1.yaml
           no_output_timeout: 40m
       - store_artifacts:
           path: ~/.local/bin/hie
@@ -82,9 +82,9 @@ jobs:
           paths:
             - ~/.stack
             - ~/.local
-      - run: stack build --test --no-terminal -j 2 --no-run-tests --stack-yaml=8.2.2
+      - run: stack build --test --no-terminal -j 2 --no-run-tests --stack-yaml=stack-8.2.2.yaml
       - run:
-          command: stack install --test -j 2 -v --cabal-verbose --stack-yaml=8.2.2 --no-terminal haskell-ide-engine
+          command: stack install --test -j 2 -v --cabal-verbose --stack-yaml=stack-8.2.2.yaml --no-terminal haskell-ide-engine
 
           no_output_timeout: 40m
       - store_artifacts:

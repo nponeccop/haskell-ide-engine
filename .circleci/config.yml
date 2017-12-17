@@ -15,7 +15,15 @@ jobs:
           keys:
           - v4-cache
           - v3-cache
-      - run: stack build --test --only-dependencies --no-terminal --system-ghc -j 2 --stack-yaml=stack-8.0.2.yaml
+      - run: stack upgrade --system-ghc
+      - run: stack --version
+      - run: stack build --test --only-snapshot --no-terminal --system-ghc -j 2 --stack-yaml=stack-8.0.2.yaml
+      - run: stack install hoogle
+      - run: hoogle generate
+      - save_cache:
+          key: v4-hoogle
+          paths:
+            - ~/.hoogle
       - save_cache:
           key: v4-cache
           paths:
@@ -44,7 +52,7 @@ jobs:
       - checkout
       - restore_cache:
           key: v2-cache-8.2.1
-      - run: stack upgrade --git --system-ghc
+      - run: stack upgrade --system-ghc
       - run: stack setup --no-terminal --stack-yaml=stack-8.2.1.yaml
       - run: stack build --test --only-snapshot --no-terminal --stack-yaml=stack-8.2.1.yaml -j 2
       - save_cache:

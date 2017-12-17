@@ -13,17 +13,17 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+          - v4-cache
           - v3-cache
-          - v2-cache
-      - run: stack build --test --only-dependencies --no-terminal --system-ghc -j 2
+      - run: stack build --test --only-dependencies --no-terminal --system-ghc -j 2 --stack-yaml=stack-8.0.2.yaml
       - save_cache:
-          key: v3-cache
+          key: v4-cache
           paths:
             - ~/.stack
             - ~/.local
-      - run: stack install --test --no-terminal --system-ghc -j 2 --no-run-tests
+      - run: stack install --test --no-terminal --system-ghc -j 2 --no-run-tests --stack-yaml=stack-8.0.2.yaml
       - run:
-          command: stack build --test --system-ghc -j 2 -v haskell-ide-engine
+          command: stack build --test --system-ghc -j 2 -v haskell-ide-engine --stack-yaml=stack-8.0.2.yaml
           no_output_timeout: 40m
       - run: cd ~ && tar cJvf hie.txz .local/bin/hie
       - store_artifacts:
@@ -74,17 +74,17 @@ jobs:
       - checkout
       - restore_cache:
           key: v2-cache-8.2.2
-      - run: stack upgrade --git --system-ghc
-      - run: stack setup --no-terminal --stack-yaml=stack-8.2.2.yaml
-      - run: stack build --test --only-snapshot --no-terminal --stack-yaml=stack-8.2.2.yaml -j 2
+      - run: stack upgrade --system-ghc
+      - run: stack setup --no-terminal --stack-yaml=stack.yaml
+      - run: stack build --test --only-snapshot --no-terminal --stack-yaml=stack.yaml -j 2
       - save_cache:
           key: v2-cache-8.2.2
           paths:
             - ~/.stack
             - ~/.local
-      - run: stack build --test --no-terminal -j 2 --no-run-tests --stack-yaml=stack-8.2.2.yaml
+      - run: stack build --test --no-terminal -j 2 --no-run-tests --stack-yaml=stack.yaml
       - run:
-          command: stack install --test -j 2 -v --cabal-verbose --stack-yaml=stack-8.2.2.yaml --no-terminal haskell-ide-engine
+          command: stack install --test -j 2 -v --cabal-verbose --stack-yaml=stack.yaml --no-terminal haskell-ide-engine
 
           no_output_timeout: 40m
       - store_artifacts:

@@ -13,8 +13,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+          - v5-cache
           - v4-cache
-          - v3-cache
       - run: stack upgrade --system-ghc
       - run: stack --version
       - run: stack build --test --only-snapshot --no-terminal --system-ghc -j 2 --stack-yaml=stack-8.0.2.yaml
@@ -25,13 +25,13 @@ jobs:
           paths:
             - ~/.hoogle
       - save_cache:
-          key: v4-cache
+          key: v5-cache
           paths:
             - ~/.stack
             - ~/.local
       - run: stack install --test --no-terminal --system-ghc -j 2 --no-run-tests --stack-yaml=stack-8.0.2.yaml
       - run:
-          command: stack build --test --system-ghc -j 2 -v haskell-ide-engine --stack-yaml=stack-8.0.2.yaml
+          command: stack build --test --system-ghc -j 2 --cabal-verbose haskell-ide-engine --stack-yaml=stack-8.0.2.yaml
           no_output_timeout: 40m
       - run: cd ~ && tar cJvf hie.txz .local/bin/hie
       - store_artifacts:
@@ -81,19 +81,20 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: v2-cache-8.2.2
+          keys:
+          - v3-cache-8.2.2
+          - v2-cache-8.2.2
       - run: stack upgrade --system-ghc
       - run: stack setup --no-terminal --stack-yaml=stack.yaml
       - run: stack build --test --only-snapshot --no-terminal --stack-yaml=stack.yaml -j 2
       - save_cache:
-          key: v2-cache-8.2.2
+          key: v3-cache-8.2.2
           paths:
             - ~/.stack
             - ~/.local
       - run: stack build --test --no-terminal -j 2 --no-run-tests --stack-yaml=stack.yaml
       - run:
-          command: stack install --test -j 2 -v --cabal-verbose --stack-yaml=stack.yaml --no-terminal haskell-ide-engine
-
+          command: stack install --test -j 2 --cabal-verbose --stack-yaml=stack.yaml --no-terminal haskell-ide-engine
           no_output_timeout: 40m
       - store_artifacts:
           path: ~/.local/bin/hie

@@ -27,7 +27,7 @@ jobs:
             - ~/.local
       - run: stack install hoogle --stack-yaml=stack-8.0.2.yaml
       - run:
-          command: stack hoogle --stack-yaml=stack-8.0.2.yaml
+          command: stack hoogle --stack-yaml=stack-8.0.2.yaml -j 2
           no_output_timeout: 20m
       - save_cache:
           key: v5-hoogle
@@ -101,7 +101,7 @@ jobs:
             - ~/.stack
             - ~/.local
       - run:
-          command: stack hoogle --stack-yaml=stack-8.2.2.yaml
+          command: stack hoogle --stack-yaml=stack.yaml
           no_output_timeout: 20m
       - run: stack build --test --no-terminal -j 2 --no-run-tests --stack-yaml=stack.yaml
       - run:

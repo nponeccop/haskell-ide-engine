@@ -92,6 +92,7 @@ jobs:
           - v4-cache-8.2.2
           - v3-cache-8.2.2
       - run: stack upgrade --system-ghc
+      - run: stack update
       - run: stack setup --no-terminal --stack-yaml=stack.yaml
       - run: stack build --test --only-snapshot --no-terminal --stack-yaml=stack.yaml -j 2
       - run: stack build hoogle --only-snapshot --no-terminal --stack-yaml=stack.yaml
@@ -100,8 +101,9 @@ jobs:
           paths:
             - ~/.stack
             - ~/.local
+      - run: stack install hoogle --stack-yaml=stack.yaml -j 2
       - run:
-          command: stack hoogle --stack-yaml=stack.yaml
+          command: stack hoogle --stack-yaml=stack.yaml -j 2
           no_output_timeout: 20m
       - run: stack build --test --no-terminal -j 2 --no-run-tests --stack-yaml=stack.yaml
       - run:
